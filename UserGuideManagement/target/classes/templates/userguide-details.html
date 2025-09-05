@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Guide Details</title>
+</head>
+<body>
+<h1 th:text="${guide.title}">Guide Title</h1>
+<p th:text="${guide.description}">Description</p>
+<a th:href="@{/userguides/edit/{id}(id=${guide.id})}">Edit UserGuide</a>
+<h3>Days and Activities</h3>
+<ul>
+    <li th:each="day : ${guide.days}">
+        <strong th:text="${day.name}">Day</strong>
+        <ul>
+            <li th:each="activity : ${day.activities}" 
+                th:text="${activity}">Activity</li>
+        </ul>
+    </li>
+</ul>
+
+<a href="/userguides">⬅ Back to list</a>
+</body>
+</html>

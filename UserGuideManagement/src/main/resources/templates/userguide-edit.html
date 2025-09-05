@@ -1,0 +1,21 @@
+<form th:action="@{'/userguides/edit/' + ${guide.id}}" th:object="${guide}" method="post">
+    <label>Title:</label>
+    <input type="text" th:field="*{title}" />
+
+    <label>Description:</label>
+    <textarea th:field="*{description}"></textarea>
+
+    <h3>Days & Activities</h3>
+    <div th:each="day, dayStat : *{days}">
+        <label>Day Name:</label>
+        <input type="text" th:field="*{days[__${dayStat.index}__].name}" />
+
+        <div th:each="activity, actStat : *{days[__${dayStat.index}__].activities}">
+            <label>Activity:</label>
+            <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__]}" />
+        </div>
+    </div>
+
+    <button type="submit">Update Guide</button>
+</form>
+

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Guide List</title>
+</head>
+<body>
+<h1>Exercise 1 - Frontend Test</h1>
+<h2>Available Guides</h2>
+
+<form method="get" action="/guides">
+    <input type="text" name="search" placeholder="Search a guide..."/>
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+    <li th:each="guide : ${guides}">
+        <a th:href="@{|/userguides/${guide.id}|}" 
+           th:text="${guide.title}">Guide Title</a>
+        <p th:text="${guide.description}">Description</p>
+    </li>
+</ul>
+</body>
+</html>

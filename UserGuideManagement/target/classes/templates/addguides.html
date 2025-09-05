@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Guide</title>
+    <script>
+        // Add new Day block
+        function addDay() {
+            const daysDiv = document.getElementById("days-container");
+            const dayIndex = daysDiv.children.length;
+
+            const dayBlock = document.createElement("div");
+            dayBlock.classList.add("day-block");
+
+            dayBlock.innerHTML = `
+                <h4>Day</h4>
+                <label>Day Name:</label>
+                <input type="text" name="days[${dayIndex}].name" />
+
+                <div class="activities" id="activities-${dayIndex}">
+                    <h5>Activities</h5>
+                </div>
+                <button type="button" onclick="addActivity(${dayIndex})">+ Add Activity</button>
+                <hr/>
+            `;
+            daysDiv.appendChild(dayBlock);
+        }
+
+        // Add activity to a specific Day
+        function addActivity(dayIndex) {
+            const activitiesDiv = document.getElementById("activities-" + dayIndex);
+            const activityIndex = activitiesDiv.children.length - 1; // ignore header
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = `days[${dayIndex}].activities[${activityIndex}]`;
+            input.placeholder = "Enter activity";
+
+            activitiesDiv.appendChild(input);
+            activitiesDiv.appendChild(document.createElement("br"));
+        }
+    </script>
+</head>
+<body>
+<h1>Add New User Guide with Days & Activities</h1>
+
+<form th:action="@{/userguides/add}" th:object="${guide}" method="post">
+
+    <label>Guide Title:</label>
+    <input type="text" th:field="*{title}" /><br/><br/>
+
+    <label>Description:</label>
+    <input type="text" th:field="*{description}" /><br/><br/>
+
+    <h3>Days</h3>
+    <div id="days-container"></div>
+
+    <button type="button" onclick="addDay()">+ Add Day</button>
+    <br/><br/>
+
+    <button type="submit">Save Guide</button>
+</form>
+
+<a href="/userguides">Back to Guides</a>
+</body>
+</html>
+
