@@ -2,6 +2,8 @@ package com.userguide.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.userguide.model.AppUser;
 import com.userguide.model.UserGuide;
+import com.userguide.repositories.UserRepository;
 import com.userguide.service.UserGuideService;
 
 @Controller
@@ -20,12 +26,29 @@ public class UserGuideController {
 	
 	   @Autowired
 	   UserGuideService guideService;
+	   
+	   @Autowired
+	   UserRepository userRepository;
 
-	    @GetMapping
-	    public String listGuides(Model model) {
-	        model.addAttribute("guides", guideService.findAllGuides());
-	        return "userguides"; // renders userguides.html
-	    }
+
+	   @GetMapping
+	   public String listGuides(Model model) {
+	       // Get logged-in user's email
+	       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	       String email = auth.getName(); // This is the email (username)
+
+	       // Fetch user from database
+	       AppUser user = userRepository.findByEmail(email).orElse(null);
+
+	       if (user != null) {
+	           // Get only guides assigned to this user
+	           model.addAttribute("guides", user.getAssignedGuides());
+	       } else {
+	           model.addAttribute("guides", List.of()); // empty list if no user found
+	       }
+
+	       return "userguides"; // renders userguides.html
+	   }
 
 	    //View the specific Guide details so fetch from H2 DB and send it to UI.
 	    @GetMapping("/{id}")
@@ -62,6 +85,13 @@ public class UserGuideController {
 	    public String updateGuide(@PathVariable Long id, @ModelAttribute("guide") UserGuide guide) {
 	        guideService.updateUserGuide(id, guide);
 	        return "redirect:/userguides/" + id; // redirect to guide-details
+	    }
+	   
+	   
+	    @PostMapping("/delete/{id}")
+	    public String deleteGuide(@PathVariable Long id) {
+	        guideService.deleteGuide(id);
+	        return "redirect:/userguides"; // go back to list page
 	    }
 }
 

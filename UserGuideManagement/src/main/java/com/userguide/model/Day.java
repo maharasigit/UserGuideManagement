@@ -9,39 +9,29 @@ import java.util.List;
 @Table(name = "days") 
 public class Day {
 	
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	    private String name;   // e.g. "Day 1"
+    private int dayNumber;   // e.g. Day 1, Day 2
 
-	@ElementCollection
-    @CollectionTable(
-        name = "day_activities",
-        joinColumns = @JoinColumn(name = "day_id")
-    )
-    @Column(name = "activity")
-    private List<String> activities = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "guide_id", nullable = false)
+    private UserGuide guide;
 
-    // getters and setters
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "day", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<DayActivities> activities = new ArrayList<>();
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+    // --- Getters & Setters ---
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public List<String> getActivities() {
-        return activities;
-    }
-    public void setActivities(List<String> activities) {
-        this.activities = activities;
-    }
+    public int getDayNumber() { return dayNumber; }
+    public void setDayNumber(int dayNumber) { this.dayNumber = dayNumber; }
+
+    public UserGuide getGuide() { return guide; }
+    public void setGuide(UserGuide guide) { this.guide = guide; }
+
+    public List<DayActivities> getActivities() { return activities; }
+    public void setActivities(List<DayActivities> activities) { this.activities = activities; }
 }

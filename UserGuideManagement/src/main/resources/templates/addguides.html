@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Add Guide</title>
+    <meta charset="UTF-8"/>
     <script>
         // Add new Day block
         function addDay() {
@@ -12,9 +13,9 @@
             dayBlock.classList.add("day-block");
 
             dayBlock.innerHTML = `
-                <h4>Day</h4>
-                <label>Day Name:</label>
-                <input type="text" name="days[${dayIndex}].name" />
+                <h4>Day ${dayIndex + 1}</h4>
+                <label>Day Number:</label>
+                <input type="number" name="days[${dayIndex}].dayNumber" /><br/>
 
                 <div class="activities" id="activities-${dayIndex}">
                     <h5>Activities</h5>
@@ -28,15 +29,43 @@
         // Add activity to a specific Day
         function addActivity(dayIndex) {
             const activitiesDiv = document.getElementById("activities-" + dayIndex);
-            const activityIndex = activitiesDiv.children.length - 1; // ignore header
+            const activityIndex = activitiesDiv.querySelectorAll(".activity-block").length;
 
-            const input = document.createElement("input");
-            input.type = "text";
-            input.name = `days[${dayIndex}].activities[${activityIndex}]`;
-            input.placeholder = "Enter activity";
+            const activityBlock = document.createElement("div");
+            activityBlock.classList.add("activity-block");
 
-            activitiesDiv.appendChild(input);
-            activitiesDiv.appendChild(document.createElement("br"));
+            activityBlock.innerHTML = `
+                <h5>Activity ${activityIndex + 1}</h5>
+                <label>Title:</label>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].title" /><br/>
+
+                <label>Description:</label>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].description" /><br/>
+
+                <label>Type:</label>
+                <select name="days[${dayIndex}].activities[${activityIndex}].type">
+                    <option value="MUSEUM">Museum</option>
+                    <option value="CASTLE">Castle</option>
+                    <option value="ACTIVITY">Activity</option>
+                    <option value="PARK">Park</option>
+                    <option value="CAVE">Cave</option>
+                </select><br/>
+
+                <label>Location:</label>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].location" /><br/>
+
+                <label>Visit Order:</label>
+                <input type="number" name="days[${dayIndex}].activities[${activityIndex}].visitOrder" /><br/>
+
+                <label>Opening Hours:</label>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].openingHours" /><br/>
+
+                <label>Website:</label>
+                <input type="url" name="days[${dayIndex}].activities[${activityIndex}].website" /><br/>
+                <br/>
+            `;
+
+            activitiesDiv.appendChild(activityBlock);
         }
     </script>
 </head>
@@ -49,7 +78,34 @@
     <input type="text" th:field="*{title}" /><br/><br/>
 
     <label>Description:</label>
-    <input type="text" th:field="*{description}" /><br/><br/>
+    <textarea th:field="*{description}"></textarea><br/><br/>
+
+    <label>Number of Days:</label>
+    <input type="number" th:field="*{numberOfDays}" /><br/><br/>
+
+    <label>Transportation:</label>
+    <select th:field="*{transportation}">
+        <option value="CAR">Car</option>
+        <option value="BIKE">Bike</option>
+        <option value="WALK">On Foot</option>
+        <option value="MOTORBIKE">Motorbike</option>
+    </select><br/><br/>
+
+    <label>Season:</label>
+    <select th:field="*{season}">
+        <option value="SUMMER">Summer</option>
+        <option value="SPRING">Spring</option>
+        <option value="AUTUMN">Autumn</option>
+        <option value="WINTER">Winter</option>
+    </select><br/><br/>
+
+    <label>Type:</label>
+    <select th:field="*{type}">
+        <option value="FAMILY">Family</option>
+        <option value="SOLO">Solo</option>
+        <option value="GROUP">Group</option>
+        <option value="FRIENDS">With Friends</option>
+    </select><br/><br/>
 
     <h3>Days</h3>
     <div id="days-container"></div>
@@ -63,4 +119,5 @@
 <a href="/userguides">Back to Guides</a>
 </body>
 </html>
+
 

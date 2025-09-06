@@ -1,21 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Guide</title>
+    <script>
+        // Add new Activity dynamically to a specific Day
+        function addActivity(dayIndex) {
+            const activitiesDiv = document.getElementById("activities-" + dayIndex);
+            const activityIndex = activitiesDiv.children.length;
+
+            const activityBlock = document.createElement("div");
+            activityBlock.classList.add("activity-block");
+
+            activityBlock.innerHTML = `
+                <label>Activity Title:</label>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].title"/><br/>
+
+                <label>Description:</label>
+                <textarea name="days[${dayIndex}].activities[${activityIndex}].description"></textarea><br/>
+
+                <label>Type:</label>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].type"/><br/>
+
+                <label>Location:</label>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].location"/><br/>
+
+                <label>Visit Order:</label>
+                <input type="number" name="days[${dayIndex}].activities[${activityIndex}].visitOrder"/><br/>
+
+                <label>Opening Hours:</label>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].openingHours"/><br/>
+
+                <label>Website:</label>
+                <input type="url" name="days[${dayIndex}].activities[${activityIndex}].website"/><br/>
+                <hr/>
+            `;
+
+            activitiesDiv.appendChild(activityBlock);
+        }
+    </script>
+</head>
+<body>
+<h1>Edit User Guide</h1>
+
 <form th:action="@{'/userguides/edit/' + ${guide.id}}" th:object="${guide}" method="post">
+
     <label>Title:</label>
-    <input type="text" th:field="*{title}" />
+    <input type="text" th:field="*{title}" /><br/><br/>
 
     <label>Description:</label>
-    <textarea th:field="*{description}"></textarea>
+    <textarea th:field="*{description}"></textarea><br/><br/>
+
+    <label>Number of Days:</label>
+    <input type="number" th:field="*{numberOfDays}" /><br/><br/>
+
+    <label>Transportation:</label>
+    <input type="text" th:field="*{transportation}" /><br/><br/>
+
+    <label>Season:</label>
+    <input type="text" th:field="*{season}" /><br/><br/>
+
+    <label>Type:</label>
+    <input type="text" th:field="*{type}" /><br/><br/>
 
     <h3>Days & Activities</h3>
     <div th:each="day, dayStat : *{days}">
-        <label>Day Name:</label>
-        <input type="text" th:field="*{days[__${dayStat.index}__].name}" />
+        <h4 th:text="'Day ' + ${day.dayNumber}"></h4>
 
-        <div th:each="activity, actStat : *{days[__${dayStat.index}__].activities}">
-            <label>Activity:</label>
-            <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__]}" />
+        <label>Day Number:</label>
+        <input type="number" th:field="*{days[__${dayStat.index}__].dayNumber}" /><br/><br/>
+
+        <h5>Activities</h5>
+        <div th:attr="id='activities-' + ${dayStat.index}">
+            <div th:each="activity, actStat : *{days[__${dayStat.index}__].activities}">
+                <label>Activity Title:</label>
+                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].title}" /><br/>
+
+                <label>Description:</label>
+                <textarea th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].description}"></textarea><br/>
+
+                <label>Type:</label>
+                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].type}" /><br/>
+
+                <label>Location:</label>
+                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].location}" /><br/>
+
+                <label>Visit Order:</label>
+                <input type="number" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].visitOrder}" /><br/>
+
+                <label>Opening Hours:</label>
+                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].openingHours}" /><br/>
+
+                <label>Website:</label>
+                <input type="url" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].website}" /><br/>
+                <hr/>
+            </div>
         </div>
+
+        <button type="button" th:onclick="'addActivity(' + ${dayStat.index} + ')'">+ Add Activity</button>
+        <hr/>
     </div>
 
     <button type="submit">Update Guide</button>
 </form>
+
+<a href="/userguides">Back to Guides</a>
+</body>
+</html>
 

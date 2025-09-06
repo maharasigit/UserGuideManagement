@@ -2,22 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Guide List</title>
+    <meta charset="UTF-8">
 </head>
 <body>
 <h1>Exercise 1 - Frontend Test</h1>
 <h2>Available Guides</h2>
 
+<!-- Search Form -->
 <form method="get" action="/guides">
     <input type="text" name="search" placeholder="Search a guide..."/>
     <button type="submit">Search</button>
 </form>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
 
+<!-- Guides List -->
 <ul>
     <li th:each="guide : ${guides}">
-        <a th:href="@{|/userguides/${guide.id}|}" 
-           th:text="${guide.title}">Guide Title</a>
-        <p th:text="${guide.description}">Description</p>
+        <h3>
+            <a th:href="@{|/userguides/${guide.id}|}" 
+               th:text="${guide.title}">Guide Title</a>
+        </h3>
+        <p><strong>Description:</strong> <span th:text="${guide.description}">Description</span></p>
+        <p><strong>Number of Days:</strong> <span th:text="${guide.numberOfDays}">0</span></p>
+        <p><strong>Transportation:</strong> <span th:text="${guide.transportation}">car</span></p>
+        <p><strong>Season:</strong> <span th:text="${guide.season}">summer</span></p>
+        <p><strong>Type:</strong> <span th:text="${guide.type}">family</span></p>
     </li>
 </ul>
+<a href="/userguides/addguide">← Add Guide</a>
 </body>
 </html>
+
