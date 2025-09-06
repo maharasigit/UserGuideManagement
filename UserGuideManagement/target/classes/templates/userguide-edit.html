@@ -1,9 +1,125 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Edit Guide</title>
+    <title>Edit User Guide</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: #fff;
+            padding: 15px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        header img {
+            height: 50px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #27ae60;
+        }
+
+        button[type="button"] {
+            background-color: #3498db;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        button[type="button"]:hover {
+            background-color: #2980b9;
+        }
+
+        .day-block, .activity-block {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .activity-block {
+            border-left: 4px solid #e67e22;
+            margin-left: 20px;
+        }
+
+        h4, h5 {
+            color: #2c3e50;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background-color: #34495e;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        a.back-link:hover {
+            background-color: #2c3e50;
+        }
+    </style>
+
     <script>
-        // Add new Activity dynamically to a specific Day
         function addActivity(dayIndex) {
             const activitiesDiv = document.getElementById("activities-" + dayIndex);
             const activityIndex = activitiesDiv.children.length;
@@ -13,25 +129,32 @@
 
             activityBlock.innerHTML = `
                 <label>Activity Title:</label>
-                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].title"/><br/>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].title" required/>
 
                 <label>Description:</label>
-                <textarea name="days[${dayIndex}].activities[${activityIndex}].description"></textarea><br/>
+                <textarea name="days[${dayIndex}].activities[${activityIndex}].description" required></textarea>
 
                 <label>Type:</label>
-                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].type"/><br/>
+                <select name="days[${dayIndex}].activities[${activityIndex}].type" required>
+                    <option value="">-- Select --</option>
+                    <option value="MUSEUM">Museum</option>
+                    <option value="CASTLE">Castle</option>
+                    <option value="ACTIVITY">Activity</option>
+                    <option value="PARK">Park</option>
+                    <option value="CAVE">Cave</option>
+                </select>
 
                 <label>Location:</label>
-                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].location"/><br/>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].location" required/>
 
                 <label>Visit Order:</label>
-                <input type="number" name="days[${dayIndex}].activities[${activityIndex}].visitOrder"/><br/>
+                <input type="number" name="days[${dayIndex}].activities[${activityIndex}].visitOrder" min="1" required/>
 
                 <label>Opening Hours:</label>
-                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].openingHours"/><br/>
+                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].openingHours" required/>
 
                 <label>Website:</label>
-                <input type="url" name="days[${dayIndex}].activities[${activityIndex}].website"/><br/>
+                <input type="url" name="days[${dayIndex}].activities[${activityIndex}].website"/>
                 <hr/>
             `;
 
@@ -39,71 +162,119 @@
         }
     </script>
 </head>
+
 <body>
-<h1>Edit User Guide</h1>
+<header>
+    <img th:src="@{/images/logo.png}" alt="Logo">
+    <h1>Edit User Guide</h1>
+      <form th:action="@{/logout}" method="post" style="margin-left:auto;">
+        <button type="submit" style="
+            padding: 6px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: none;
+            background-color: #e74c3c;
+            color: white;
+            cursor: pointer;
+        ">Logout</button>
+    </form>
+</header>
 
 <form th:action="@{'/userguides/edit/' + ${guide.id}}" th:object="${guide}" method="post">
 
     <label>Title:</label>
-    <input type="text" th:field="*{title}" /><br/><br/>
+    <input type="text" th:field="*{title}" required />
 
     <label>Description:</label>
-    <textarea th:field="*{description}"></textarea><br/><br/>
+    <textarea th:field="*{description}" required></textarea>
 
     <label>Number of Days:</label>
-    <input type="number" th:field="*{numberOfDays}" /><br/><br/>
+    <input type="number" th:field="*{numberOfDays}" min="1" required />
 
     <label>Transportation:</label>
-    <input type="text" th:field="*{transportation}" /><br/><br/>
+    <select th:field="*{transportation}" required>
+        <option value="">-- Select --</option>
+        <option value="CAR">Car</option>
+        <option value="BIKE">Bike</option>
+        <option value="WALK">On Foot</option>
+        <option value="MOTORBIKE">Motorbike</option>
+    </select>
 
     <label>Season:</label>
-    <input type="text" th:field="*{season}" /><br/><br/>
+    <select th:field="*{season}" required>
+        <option value="">-- Select --</option>
+        <option value="SUMMER">Summer</option>
+        <option value="SPRING">Spring</option>
+        <option value="AUTUMN">Autumn</option>
+        <option value="WINTER">Winter</option>
+    </select>
 
     <label>Type:</label>
-    <input type="text" th:field="*{type}" /><br/><br/>
+    <select th:field="*{type}" required>
+        <option value="">-- Select --</option>
+        <option value="FAMILY">Family</option>
+        <option value="SOLO">Solo</option>
+        <option value="GROUP">Group</option>
+        <option value="FRIENDS">With Friends</option>
+    </select>
 
     <h3>Days & Activities</h3>
-    <div th:each="day, dayStat : *{days}">
+    <div th:each="day, dayStat : *{days}" class="day-block">
         <h4 th:text="'Day ' + ${day.dayNumber}"></h4>
 
         <label>Day Number:</label>
-        <input type="number" th:field="*{days[__${dayStat.index}__].dayNumber}" /><br/><br/>
+        <input type="number" th:field="*{days[__${dayStat.index}__].dayNumber}" min="1" required />
 
         <h5>Activities</h5>
         <div th:attr="id='activities-' + ${dayStat.index}">
-            <div th:each="activity, actStat : *{days[__${dayStat.index}__].activities}">
+            <div th:each="activity, actStat : *{days[__${dayStat.index}__].activities}" class="activity-block">
                 <label>Activity Title:</label>
-                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].title}" /><br/>
+                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].title}" required />
 
                 <label>Description:</label>
-                <textarea th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].description}"></textarea><br/>
+                <textarea th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].description}" required></textarea>
 
                 <label>Type:</label>
-                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].type}" /><br/>
+                <select th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].type}" required>
+                    <option value="">-- Select --</option>
+                    <option value="MUSEUM">Museum</option>
+                    <option value="CASTLE">Castle</option>
+                    <option value="ACTIVITY">Activity</option>
+                    <option value="PARK">Park</option>
+                    <option value="CAVE">Cave</option>
+                </select>
 
                 <label>Location:</label>
-                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].location}" /><br/>
+                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].location}" required />
 
                 <label>Visit Order:</label>
-                <input type="number" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].visitOrder}" /><br/>
+                <input type="number" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].visitOrder}" min="1" required />
 
                 <label>Opening Hours:</label>
-                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].openingHours}" /><br/>
+                <input type="text" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].openingHours}" required />
 
                 <label>Website:</label>
-                <input type="url" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].website}" /><br/>
+                <input type="url" th:field="*{days[__${dayStat.index}__].activities[__${actStat.index}__].website}" />
                 <hr/>
             </div>
         </div>
 
         <button type="button" th:onclick="'addActivity(' + ${dayStat.index} + ')'">+ Add Activity</button>
-        <hr/>
     </div>
 
     <button type="submit">Update Guide</button>
 </form>
 
-<a href="/userguides">Back to Guides</a>
+<a href="/userguides" class="back-link">← Back to Guides</a>
+
+<script>
+    // Prevent invalid form submission
+    document.querySelector("form").addEventListener("submit", function(event) {
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            alert("⚠️ Please fill all required fields before submitting!");
+        }
+    });
+</script>
 </body>
 </html>
-

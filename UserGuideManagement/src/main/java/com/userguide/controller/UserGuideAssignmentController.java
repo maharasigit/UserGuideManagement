@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.userguide.repositories.UserGuideRepository;
 import com.userguide.repositories.UserRepository;
@@ -35,14 +36,20 @@ public class UserGuideAssignmentController {
 
     @GetMapping
     public String showAssignForm(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users",  userRepository.findAll()
+                .stream()
+                .filter(u -> !"ROLE_ADMIN".equals(u.getRole()))
+                .toList()); // filter the admin roles
         model.addAttribute("guides", guideRepository.findAll());
         return "userguide-assign"; // Thymeleaf template
     }
 
     @PostMapping
-    public String assignGuide(@RequestParam Long userId, @RequestParam Long guideId) {
+    public String assignGuide(@RequestParam Long userId, @RequestParam Long guideId,RedirectAttributes redirectAttributes) {
         assignmentService.assignGuideToUser(guideId, userId);
-        return "redirect:/admin/assign?success";
+       // model.addAttribute("assignSuccess", true);
+        redirectAttributes.addFlashAttribute("assignSuccess", true);
+
+        return "redirect:/admin/assign"; // redirect to assign
     }
 }

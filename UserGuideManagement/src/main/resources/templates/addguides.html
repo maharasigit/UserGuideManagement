@@ -1,123 +1,249 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add Guide</title>
+    <title>Add User Guide</title>
     <meta charset="UTF-8"/>
-    <script>
-        // Add new Day block
-        function addDay() {
-            const daysDiv = document.getElementById("days-container");
-            const dayIndex = daysDiv.children.length;
-
-            const dayBlock = document.createElement("div");
-            dayBlock.classList.add("day-block");
-
-            dayBlock.innerHTML = `
-                <h4>Day ${dayIndex + 1}</h4>
-                <label>Day Number:</label>
-                <input type="number" name="days[${dayIndex}].dayNumber" /><br/>
-
-                <div class="activities" id="activities-${dayIndex}">
-                    <h5>Activities</h5>
-                </div>
-                <button type="button" onclick="addActivity(${dayIndex})">+ Add Activity</button>
-                <hr/>
-            `;
-            daysDiv.appendChild(dayBlock);
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
         }
 
-        // Add activity to a specific Day
-        function addActivity(dayIndex) {
-            const activitiesDiv = document.getElementById("activities-" + dayIndex);
-            const activityIndex = activitiesDiv.querySelectorAll(".activity-block").length;
-
-            const activityBlock = document.createElement("div");
-            activityBlock.classList.add("activity-block");
-
-            activityBlock.innerHTML = `
-                <h5>Activity ${activityIndex + 1}</h5>
-                <label>Title:</label>
-                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].title" /><br/>
-
-                <label>Description:</label>
-                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].description" /><br/>
-
-                <label>Type:</label>
-                <select name="days[${dayIndex}].activities[${activityIndex}].type">
-                    <option value="MUSEUM">Museum</option>
-                    <option value="CASTLE">Castle</option>
-                    <option value="ACTIVITY">Activity</option>
-                    <option value="PARK">Park</option>
-                    <option value="CAVE">Cave</option>
-                </select><br/>
-
-                <label>Location:</label>
-                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].location" /><br/>
-
-                <label>Visit Order:</label>
-                <input type="number" name="days[${dayIndex}].activities[${activityIndex}].visitOrder" /><br/>
-
-                <label>Opening Hours:</label>
-                <input type="text" name="days[${dayIndex}].activities[${activityIndex}].openingHours" /><br/>
-
-                <label>Website:</label>
-                <input type="url" name="days[${dayIndex}].activities[${activityIndex}].website" /><br/>
-                <br/>
-            `;
-
-            activitiesDiv.appendChild(activityBlock);
+        header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: #fff;
+            padding: 15px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
-    </script>
+
+        header img {
+            height: 50px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #27ae60;
+        }
+
+        button[type="button"] {
+            background-color: #3498db;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        button[type="button"]:hover {
+            background-color: #2980b9;
+        }
+
+        .day-block, .activity-block {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .day-block h4, .activity-block h5 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .activity-block {
+            border-left: 4px solid #e67e22;
+            margin-left: 20px;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background-color: #34495e;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        a.back-link:hover {
+            background-color: #2c3e50;
+        }
+    </style>
 </head>
+
 <body>
-<h1>Add New User Guide with Days & Activities</h1>
+<header>
+    <img th:src="@{/images/logo.png}" alt="Logo">
+    <h1>Add New User Guide</h1>
+</header>
 
 <form th:action="@{/userguides/add}" th:object="${guide}" method="post">
 
     <label>Guide Title:</label>
-    <input type="text" th:field="*{title}" /><br/><br/>
+    <input type="text" th:field="*{title}" required />
 
     <label>Description:</label>
-    <textarea th:field="*{description}"></textarea><br/><br/>
+    <textarea th:field="*{description}" required></textarea>
 
     <label>Number of Days:</label>
-    <input type="number" th:field="*{numberOfDays}" /><br/><br/>
+    <input type="number" th:field="*{numberOfDays}" min="1" required />
 
     <label>Transportation:</label>
-    <select th:field="*{transportation}">
+    <select th:field="*{transportation}" required>
+        <option value="">-- Select --</option>
         <option value="CAR">Car</option>
         <option value="BIKE">Bike</option>
         <option value="WALK">On Foot</option>
         <option value="MOTORBIKE">Motorbike</option>
-    </select><br/><br/>
+    </select>
 
     <label>Season:</label>
-    <select th:field="*{season}">
+    <select th:field="*{season}" required>
+        <option value="">-- Select --</option>
         <option value="SUMMER">Summer</option>
         <option value="SPRING">Spring</option>
         <option value="AUTUMN">Autumn</option>
         <option value="WINTER">Winter</option>
-    </select><br/><br/>
+    </select>
 
     <label>Type:</label>
-    <select th:field="*{type}">
+    <select th:field="*{type}" required>
+        <option value="">-- Select --</option>
         <option value="FAMILY">Family</option>
         <option value="SOLO">Solo</option>
         <option value="GROUP">Group</option>
         <option value="FRIENDS">With Friends</option>
-    </select><br/><br/>
+    </select>
 
     <h3>Days</h3>
     <div id="days-container"></div>
-
     <button type="button" onclick="addDay()">+ Add Day</button>
-    <br/><br/>
 
+    <br/><br/>
     <button type="submit">Save Guide</button>
 </form>
 
-<a href="/userguides">Back to Guides</a>
+<a href="/userguides" class="back-link">← Back to Guides</a>
+
+<script>
+    function addDay() {
+        const daysDiv = document.getElementById("days-container");
+        const dayIndex = daysDiv.children.length;
+
+        const dayBlock = document.createElement("div");
+        dayBlock.classList.add("day-block");
+
+        dayBlock.innerHTML = `
+            <h4>Day ${dayIndex + 1}</h4>
+            <label>Day Number:</label>
+            <input type="number" name="days[${dayIndex}].dayNumber" min="1" required />
+
+            <div class="activities" id="activities-${dayIndex}">
+                <h5>Activities</h5>
+            </div>
+            <button type="button" onclick="addActivity(${dayIndex})">+ Add Activity</button>
+        `;
+        daysDiv.appendChild(dayBlock);
+    }
+
+    function addActivity(dayIndex) {
+        const activitiesDiv = document.getElementById("activities-" + dayIndex);
+        const activityIndex = activitiesDiv.querySelectorAll(".activity-block").length;
+
+        const activityBlock = document.createElement("div");
+        activityBlock.classList.add("activity-block");
+
+        activityBlock.innerHTML = `
+            <h5>Activity ${activityIndex + 1}</h5>
+            <label>Title:</label>
+            <input type="text" name="days[${dayIndex}].activities[${activityIndex}].title" required />
+
+            <label>Description:</label>
+            <input type="text" name="days[${dayIndex}].activities[${activityIndex}].description" required />
+
+            <label>Type:</label>
+            <select name="days[${dayIndex}].activities[${activityIndex}].type" required>
+                <option value="">-- Select --</option>
+                <option value="MUSEUM">Museum</option>
+                <option value="CASTLE">Castle</option>
+                <option value="ACTIVITY">Activity</option>
+                <option value="PARK">Park</option>
+                <option value="CAVE">Cave</option>
+            </select>
+
+            <label>Location:</label>
+            <input type="text" name="days[${dayIndex}].activities[${activityIndex}].location" required />
+
+            <label>Visit Order:</label>
+            <input type="number" name="days[${dayIndex}].activities[${activityIndex}].visitOrder" min="1" required />
+
+            <label>Opening Hours:</label>
+            <input type="text" name="days[${dayIndex}].activities[${activityIndex}].openingHours" required />
+
+            <label>Website:</label>
+            <input type="url" name="days[${dayIndex}].activities[${activityIndex}].website" required />
+        `;
+
+        activitiesDiv.appendChild(activityBlock);
+    }
+
+    // Prevent form submission if invalid
+    document.querySelector("form").addEventListener("submit", function(event) {
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            alert("⚠️ Please fill all required fields before submitting!");
+        }
+    });
+</script>
 </body>
 </html>
-
-
