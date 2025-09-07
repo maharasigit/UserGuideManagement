@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -32,23 +33,34 @@ public class UserGuideController {
 
 
 	   @GetMapping
-	   public String listGuides(Model model) {
+	   public String listGuides(@RequestParam(value = "search", required = false) String search, Model model) {
 	       // Get logged-in user's email
 	       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	       String email = auth.getName(); // This is the email (username)
+	       String email = auth.getName(); // email (username)
 
 	       // Fetch user from database
 	       AppUser user = userRepository.findByEmail(email).orElse(null);
 
 	       if (user != null) {
-	           // Get only guides assigned to this user
-	           model.addAttribute("guides", user.getAssignedGuides());
+	           List<UserGuide> guides = user.getAssignedGuides();
+
+	           // If search is provided, filter guides by title or description
+	           if (search != null && !search.isEmpty()) {
+	               String lowerSearch = search.toLowerCase();
+	               guides = guides.stream()
+	                              .filter(g -> g.getTitle().toLowerCase().contains(lowerSearch) ||
+	                                           g.getDescription().toLowerCase().contains(lowerSearch))
+	                              .toList();
+	           }
+
+	           model.addAttribute("guides", guides);
 	       } else {
 	           model.addAttribute("guides", List.of()); // empty list if no user found
 	       }
 
-	       return "userguides"; // renders userguides.html
+	       return "userguides";
 	   }
+
 
 	    //View the specific Guide details so fetch from H2 DB and send it to UI.
 	    @GetMapping("/{id}")

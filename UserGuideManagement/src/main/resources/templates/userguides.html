@@ -162,6 +162,24 @@
         .actions a:hover {
             background: linear-gradient(135deg, #58d68d, #229954);
         }
+        .show-all-btn {
+		    display: inline-block;
+		    padding: 12px 20px;
+		    margin-left: 5px;
+		    border-radius: 10px;
+		    background: linear-gradient(135deg, #f39c12, #d35400);
+		    color: #fff;
+		    text-decoration: none;
+		    font-weight: bold;
+		    cursor: pointer;
+		    transition: transform 0.2s ease, background 0.3s ease;
+	  }
+
+		.show-all-btn:hover {
+		    background: linear-gradient(135deg, #f5b041, #e67e22);
+		    transform: scale(1.05);
+		}
+
     </style>
 </head>
 <body>
@@ -175,9 +193,10 @@
 </header>
 
 <!-- Search Form -->
-<form class="search-form" method="get" action="/guides">
-    <input type="text" name="search" placeholder="🔍 Search a guide..."/>
+<form class="search-form" method="get" action="/userguides">
+    <input type="text" name="search" placeholder=" Search a guide..."/>
     <button type="submit">Search</button>
+     <a href="/userguides" class="show-all-btn">Show All Guides</a>
 </form>
 
 <!-- Guides List -->
