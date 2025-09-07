@@ -3,40 +3,63 @@
 <head>
     <title>Assign UserGuide</title>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f2f5;
             padding: 30px;
+            color: #2c3e50;
         }
 
+        /* --- Header --- */
         header {
             display: flex;
             align-items: center;
             gap: 15px;
-            background-color: #fff;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.95);
+            padding: 15px 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             margin-bottom: 30px;
+            backdrop-filter: blur(6px);
         }
 
         header img {
-            height: 50px;
+            height: 55px;
         }
 
         header h1 {
-            font-size: 22px;
-            color: #333;
+            flex-grow: 1;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        header form button {
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+
+        header form button:hover {
+            background: linear-gradient(135deg, #ff8787, #e63946);
+            transform: scale(1.07);
         }
 
         .assign-form {
-            background-color: #fff;
+            background: rgba(255,255,255,0.95);
             padding: 30px;
             max-width: 500px;
             margin: 0 auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .assign-form label {
@@ -48,40 +71,42 @@
 
         .assign-form select {
             width: 100%;
-            padding: 8px 10px;
-            border-radius: 5px;
+            padding: 10px;
+            border-radius: 8px;
             border: 1px solid #ccc;
             font-size: 14px;
         }
 
-        .assign-form button {
+        .assign-form button[type="submit"] {
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #3498db;
-            color: white;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.3s ease;
         }
 
-        .assign-form button:hover {
-            background-color: #2980b9;
+        .assign-form button[type="submit"]:hover {
+            background: linear-gradient(135deg, #5dade2, #2874a6);
         }
 
         a.back-link {
             display: inline-block;
             margin-top: 20px;
             text-decoration: none;
+            background: linear-gradient(135deg, #6dd5fa, #2980b9);
             color: #fff;
-            background-color: #34495e;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
 
         a.back-link:hover {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #48c6ef, #6f86d6);
         }
     </style>
 </head>
@@ -90,23 +115,15 @@
 <header>
     <img th:src="@{/images/logo.png}" alt="Logo"/>
     <h1>Assign UserGuide to User</h1>
-      <form th:action="@{/logout}" method="post" style="margin-left:auto;">
-        <button type="submit" style="
-            padding: 6px 12px;
-            font-size: 14px;
-            border-radius: 5px;
-            border: none;
-            background-color: #e74c3c;
-            color: white;
-            cursor: pointer;
-        ">Logout</button>
+    <form th:action="@{/logout}" method="post" style="margin-left:auto;">
+        <button type="submit"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
     </form>
 </header>
 
 <div class="assign-form">
-	<div th:if="${assignSuccess}" style="color: green; font-weight: bold; margin-bottom: 15px;">
-	    UserGuide successfully assigned!
-	</div>
+    <div th:if="${assignSuccess}" style="color: green; font-weight: bold; margin-bottom: 15px;">
+        UserGuide successfully assigned!
+    </div>
     <form th:action="@{/admin/assign}" method="post">
 
         <label for="userId">Select User:</label>
@@ -127,4 +144,3 @@
 
 </body>
 </html>
-

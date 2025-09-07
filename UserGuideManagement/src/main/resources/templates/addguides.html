@@ -3,38 +3,62 @@
 <head>
     <title>Add User Guide</title>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
             padding: 20px;
+            color: #2c3e50;
         }
 
+        /* --- Header --- */
         header {
             display: flex;
             align-items: center;
             gap: 15px;
-            background-color: #fff;
+            background: rgba(255,255,255,0.92);
             padding: 15px 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             margin-bottom: 30px;
+            backdrop-filter: blur(8px);
         }
 
         header img {
-            height: 50px;
+            height: 55px;
         }
 
         header h1 {
-            font-size: 24px;
-            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+            flex-grow: 1;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        header form button {
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+
+        header form button:hover {
+            background: linear-gradient(135deg, #ff8787, #e63946);
+            transform: scale(1.07);
         }
 
         form {
-            background-color: #fff;
+            background: rgba(255,255,255,0.95);
             padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             max-width: 900px;
             margin: 0 auto;
         }
@@ -57,9 +81,7 @@
             border: 1px solid #ccc;
         }
 
-        textarea {
-            resize: vertical;
-        }
+        textarea { resize: vertical; }
 
         button {
             padding: 10px 20px;
@@ -69,62 +91,71 @@
         }
 
         button[type="submit"] {
-            background-color: #2ecc71;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: #fff;
         }
 
         button[type="submit"]:hover {
-            background-color: #27ae60;
+            background: linear-gradient(135deg, #27ae60, #229954);
         }
 
         button[type="button"] {
-            background-color: #3498db;
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: #fff;
             margin-bottom: 20px;
         }
 
         button[type="button"]:hover {
-            background-color: #2980b9;
+            background: linear-gradient(135deg, #2980b9, #1f618d);
         }
 
         .day-block, .activity-block {
-            background-color: #f9f9f9;
+            background: #fefefe;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 20px;
             border-left: 4px solid #3498db;
         }
 
-        .day-block h4, .activity-block h5 {
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
+        .activity-block { border-left: 4px solid #e67e22; margin-left: 20px; }
 
-        .activity-block {
-            border-left: 4px solid #e67e22;
-            margin-left: 20px;
-        }
+        .day-block h4, .activity-block h5 { margin-bottom: 10px; color: #2c3e50; }
 
         a.back-link {
             display: inline-block;
             margin-top: 20px;
             text-decoration: none;
-            background-color: #34495e;
+            background: linear-gradient(135deg, #6dd5fa, #2980b9);
             color: #fff;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 10px 18px;
+            border-radius: 12px;
         }
 
         a.back-link:hover {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #48c6ef, #6f86d6);
         }
     </style>
 </head>
 
 <body>
+
 <header>
     <img th:src="@{/images/logo.png}" alt="Logo">
     <h1>Add New User Guide</h1>
+    <form th:action="@{/logout}" method="post" style="margin-left:auto;">
+        <button type="submit" style="
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, background 0.3s ease;
+        " onmouseover="this.style.background='linear-gradient(135deg, #ff6b6b, #e63946)'" onmouseout="this.style.background='linear-gradient(135deg, #e74c3c, #c0392b)'">
+            <i class="fa-solid fa-sign-out-alt"></i> Logout
+        </button>
+    </form>
 </header>
 
 <form th:action="@{/userguides/add}" th:object="${guide}" method="post">
@@ -237,7 +268,6 @@
         activitiesDiv.appendChild(activityBlock);
     }
 
-    // Prevent form submission if invalid
     document.querySelector("form").addEventListener("submit", function(event) {
         if (!this.checkValidity()) {
             event.preventDefault();

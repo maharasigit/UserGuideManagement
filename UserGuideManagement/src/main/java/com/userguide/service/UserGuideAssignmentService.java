@@ -30,4 +30,19 @@ public class UserGuideAssignmentService {
         user.getAssignedGuides().add(guide);
         userRepository.save(user);
     }
+    
+
+    public void unassignGuideFromUser(Long userId, Long guideId) {
+        AppUser user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        UserGuide guide = guideRepository.findById(guideId)
+                .orElseThrow(() -> new RuntimeException("Guide not found"));
+
+        // Remove the relation both sides
+        user.getAssignedGuides().remove(guide);
+        guide.getAssignedUsers().remove(user);
+
+        userRepository.save(user);
+        guideRepository.save(guide);
+    }
 }

@@ -3,131 +3,180 @@
 <head>
     <title>User Guides</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
         body {
-            background-color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
             padding: 20px;
+            color: #2c3e50;
         }
 
+        /* --- Header --- */
         header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background-color: #ffffff;
+            gap: 15px;
+            background: rgba(255,255,255,0.92);
             padding: 15px 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             margin-bottom: 30px;
+            backdrop-filter: blur(8px);
         }
 
         header img {
-            height: 50px;
+            height: 55px;
         }
 
         header h1 {
+            font-size: 28px;
+            font-weight: bold;
             flex-grow: 1;
             text-align: center;
-            font-size: 24px;
-            color: #333;
+            letter-spacing: 1px;
         }
 
         header form button {
-            padding: 8px 15px;
-            background-color: #e74c3c;
-            color: #fff;
+            padding: 10px 18px;
+            border-radius: 10px;
             border: none;
-            border-radius: 5px;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            color: #fff;
             cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, background 0.3s ease;
         }
 
         header form button:hover {
-            background-color: #c0392b;
+            background: linear-gradient(135deg, #ff8787, #e63946);
+            transform: scale(1.07);
         }
 
+        /* --- Search --- */
         .search-form {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             display: flex;
             gap: 10px;
         }
 
         .search-form input {
-            padding: 8px 12px;
+            padding: 12px 15px;
             flex-grow: 1;
-            border-radius: 5px;
+            border-radius: 10px;
             border: 1px solid #ccc;
+            font-size: 15px;
         }
 
         .search-form button {
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 12px 20px;
+            border-radius: 10px;
             border: none;
-            background-color: #3498db;
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: #fff;
             cursor: pointer;
         }
 
         .search-form button:hover {
-            background-color: #2980b9;
+            background: linear-gradient(135deg, #5dade2, #2874a6);
         }
 
+        /* --- Guide Cards --- */
         .guide-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 25px;
         }
 
         .guide-card {
-            background-color: #fff;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.85);
+            padding: 22px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .guide-card h3 {
-            margin-bottom: 10px;
+        .guide-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+        }
+
+        .guide-card h3 a {
+            text-decoration: none;
             color: #2c3e50;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .guide-card h3 a:hover {
+            color: #3498db;
         }
 
         .guide-card p {
-            margin-bottom: 5px;
-            color: #555;
+            margin: 8px 0;
+            font-size: 15px;
         }
 
-        .add-guide {
-            margin-top: 20px;
-            display: inline-block;
-            text-decoration: none;
-            padding: 10px 15px;
-            background-color: #2ecc71;
+        .tags {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 20px;
+            background: #f1f1f1;
+            color: #333;
+        }
+
+        .tag i {
+            font-size: 14px;
+        }
+
+        /* --- Admin Actions --- */
+        .actions {
+            margin-top: 35px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .actions a {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: #fff;
-            border-radius: 5px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
         }
 
-        .add-guide:hover {
-            background-color: #27ae60;
+        .actions a:hover {
+            background: linear-gradient(135deg, #58d68d, #229954);
         }
     </style>
 </head>
 <body>
 
 <header>
-    <img th:src="@{/images/logo.png}" alt="Logo">
-    <h1>Available Guides</h1>
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Logout</button>
+    <img th:src="@{/images/logo.png}" alt="Logo"/>
+    <h1>🌍 Available Guides</h1>
+    <form th:action="@{/logout}" method="post" style="margin-left:auto;">
+        <button type="submit"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
     </form>
 </header>
 
 <!-- Search Form -->
 <form class="search-form" method="get" action="/guides">
-    <input type="text" name="search" placeholder="Search a guide..."/>
+    <input type="text" name="search" placeholder="🔍 Search a guide..."/>
     <button type="submit">Search</button>
 </form>
 
@@ -137,16 +186,23 @@
         <h3>
             <a th:href="@{|/userguides/${guide.id}|}" th:text="${guide.title}">Guide Title</a>
         </h3>
-        <p><strong>Description:</strong> <span th:text="${guide.description}">Description</span></p>
-        <p><strong>Number of Days:</strong> <span th:text="${guide.numberOfDays}">0</span></p>
-        <p><strong>Transportation:</strong> <span th:text="${guide.transportation}">car</span></p>
-        <p><strong>Season:</strong> <span th:text="${guide.season}">summer</span></p>
-        <p><strong>Type:</strong> <span th:text="${guide.type}">family</span></p>
+        <p th:text="${guide.description}">Explore destination</p>
+
+        <div class="tags">
+            <span class="tag"><i class="fa-solid fa-calendar-days"></i> <span th:text="${guide.numberOfDays}">0</span> Days</span>
+            <span class="tag"><i class="fa-solid fa-car"></i> <span th:text="${guide.transportation}">Car</span></span>
+            <span class="tag"><i class="fa-solid fa-leaf"></i> <span th:text="${guide.season}">Summer</span></span>
+            <span class="tag"><i class="fa-solid fa-users"></i> <span th:text="${guide.type}">Family</span></span>
+        </div>
     </div>
 </div>
+
+<!-- Admin Actions -->
 <div class="actions" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-  <a href="/userguides/addguide" class="add-guide">← Add Guide</a>
+  <a href="/userguides/addguide">➕ Add Guide</a>
+  <a href="/admin/assign/assigned-guides">👥 View & Remove Assigned User Guide</a>
+  <a th:href="@{/admin/assign}">📌 Assign Guide to User</a>
 </div>
+
 </body>
 </html>
-

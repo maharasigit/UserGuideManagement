@@ -3,107 +3,198 @@
 <head>
     <title>User Guide Details</title>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
             padding: 20px;
+            animation: fadeIn 1s ease-in-out;
         }
 
+        /* Header */
         header {
             display: flex;
             align-items: center;
             gap: 15px;
-            background-color: #fff;
+            background: rgba(255,255,255,0.92);
             padding: 15px 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             margin-bottom: 30px;
+            backdrop-filter: blur(8px);
+            animation: slideDown 0.8s ease;
         }
 
         header img {
-            height: 50px;
+            height: 55px;
         }
 
         header h1 {
-            font-size: 24px;
-            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            flex-grow: 1;
+            letter-spacing: 1px;
+        }
+
+        header button {
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+
+        header button:hover {
+            background: linear-gradient(135deg, #ff8787, #e63946);
+            transform: scale(1.07);
+        }
+
+        /* Guide Details Card */
+        .guide-details {
+            background: rgba(255,255,255,0.95);
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 950px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease;
+        }
+
+        .guide-details p {
+            margin: 12px 0;
+            color: #444;
+            font-size: 16px;
+        }
+
+        /* Admin Actions */
+        .actions {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
         }
 
         .actions a, .actions button {
-            margin-right: 10px;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 12px 18px;
+            border-radius: 10px;
             text-decoration: none;
             border: none;
-            cursor: pointer;
             font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .actions a {
-            background-color: #3498db;
+            background: linear-gradient(135deg, #48c6ef, #6f86d6);
             color: #fff;
         }
 
         .actions a:hover {
-            background-color: #2980b9;
+            background: linear-gradient(135deg, #6dd5fa, #2980b9);
+            transform: translateY(-2px);
         }
 
         .actions button {
-            background-color: #e74c3c;
+            background: linear-gradient(135deg, #ff6a88, #ff99ac);
             color: #fff;
         }
 
         .actions button:hover {
-            background-color: #c0392b;
+            background: linear-gradient(135deg, #ff7eb3, #e84393);
+            transform: translateY(-2px);
         }
 
-        .guide-details {
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .guide-details p {
-            margin: 5px 0 15px 0;
-        }
-
+        /* Day Block */
         .day-block {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #3498db;
+            background: #fefcfb;
+            padding: 22px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            border-left: 6px solid #ff9f43;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            animation: fadeInUp 1s ease;
         }
 
-        .activity-block {
-            background-color: #fff;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid #e67e22;
-        }
-
-        .activity-block h3 {
-            margin: 0 0 5px 0;
+        .day-block h2 {
+            margin-bottom: 15px;
             color: #2c3e50;
         }
 
+        /* Activity Block */
+        .activity-block {
+            background: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 5px solid #48c6ef;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.07);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .activity-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .activity-block h3 {
+            margin: 0 0 8px 0;
+            color: #34495e;
+        }
+
+        .activity-block p {
+            font-size: 14px;
+            margin: 4px 0;
+            color: #555;
+        }
+
+        .activity-block a {
+            color: #48c6ef;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .activity-block a:hover {
+            text-decoration: underline;
+        }
+
+        /* Back Button */
         a.back-link {
             display: inline-block;
             margin-top: 20px;
             text-decoration: none;
-            background-color: #34495e;
+            padding: 12px 18px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6dd5fa, #2980b9);
             color: #fff;
-            padding: 8px 15px;
-            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.2s ease, background 0.3s ease;
         }
 
         a.back-link:hover {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #48c6ef, #6f86d6);
+            transform: scale(1.05);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
@@ -112,57 +203,55 @@
 <header>
     <img th:src="@{/images/logo.png}" alt="Logo"/>
     <h1 th:text="${guide.title}">Guide Title</h1>
-      <form th:action="@{/logout}" method="post" style="margin-left:auto;">
-        <button type="submit" style="
-            padding: 6px 12px;
-            font-size: 14px;
-            border-radius: 5px;
-            border: none;
-            background-color: #e74c3c;
-            color: white;
-            cursor: pointer;
-        ">Logout</button>
+    <form th:action="@{/logout}" method="post" style="margin-left:auto;">
+        <button type="submit"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
     </form>
 </header>
 
 <div class="guide-details">
 
+    <!-- Admin actions -->
     <div class="actions" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-        <a th:href="@{/userguides/edit/{id}(id=${guide.id})}">Edit</a>
+        <a th:href="@{/userguides/edit/{id}(id=${guide.id})}"><i class="fa-solid fa-pen"></i> Edit</a>
         <form th:action="@{/userguides/delete/{id}(id=${guide.id})}" method="post" style="display:inline">
             <input type="hidden" name="_method" value="delete"/>
-            <button type="submit">Delete</button>
+            <button type="submit"><i class="fa-solid fa-trash"></i> Delete</button>
         </form>
-        <a th:href="@{/admin/assign}">Assign</a>
+        <a th:href="@{/admin/assign}"><i class="fa-solid fa-user-plus"></i> Assign</a>
     </div>
 
-    <p><strong>Description:</strong> <span th:text="${guide.description}"></span></p>
-    <p><strong>Number of Days:</strong> <span th:text="${guide.numberOfDays}"></span></p>
-    <p><strong>Transportation:</strong> <span th:text="${guide.transportation}"></span></p>
-    <p><strong>Season:</strong> <span th:text="${guide.season}"></span></p>
-    <p><strong>Type:</strong> <span th:text="${guide.type}"></span></p>
+    <!-- Guide info -->
+    <p><i class="fa-solid fa-info-circle"></i> <strong>Description:</strong> <span th:text="${guide.description}"></span></p>
+    <p><i class="fa-solid fa-calendar-days"></i> <strong>Number of Days:</strong> <span th:text="${guide.numberOfDays}"></span></p>
+    <p><i class="fa-solid fa-car"></i> <strong>Transportation:</strong> <span th:text="${guide.transportation}"></span></p>
+    <p><i class="fa-solid fa-leaf"></i> <strong>Season:</strong> <span th:text="${guide.season}"></span></p>
+    <p><i class="fa-solid fa-users"></i> <strong>Type:</strong> <span th:text="${guide.type}"></span></p>
 
     <hr/>
 
     <!-- Days & Activities -->
     <div th:each="day : ${guide.days}" class="day-block">
-        <h2 th:text="'Day ' + ${day.dayNumber}"></h2>
+        <h2><i class="fa-solid fa-sun"></i> <span th:text="'Day ' + ${day.dayNumber}"></span></h2>
 
         <div th:each="activity : ${day.activities}" class="activity-block">
-            <h3 th:text="${activity.title}">Activity Title</h3>
+            <h3><i class="fa-solid fa-map-marker-alt"></i> <span th:text="${activity.title}">Activity Title</span></h3>
             <p><strong>Description:</strong> <span th:text="${activity.description}"></span></p>
             <p><strong>Type:</strong> <span th:text="${activity.type}"></span></p>
             <p><strong>Location:</strong> <span th:text="${activity.location}"></span></p>
             <p><strong>Visit Order:</strong> <span th:text="${activity.visitOrder}"></span></p>
             <p><strong>Opening Hours:</strong> <span th:text="${activity.openingHours}"></span></p>
             <p th:if="${activity.website != null}">
-                <a th:href="${activity.website}" target="_blank" th:text="${activity.website}">Website</a>
+                🌐 <a th:href="${activity.website}" target="_blank" th:text="${activity.website}">Website</a>
             </p>
         </div>
     </div>
 
+    <!-- Back -->
     <a href="/userguides" class="back-link">← Back to Guide List</a>
 </div>
 
 </body>
 </html>
+
+
+

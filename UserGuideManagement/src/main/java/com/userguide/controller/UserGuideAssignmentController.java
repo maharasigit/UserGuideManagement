@@ -2,6 +2,8 @@ package com.userguide.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.userguide.model.AppUser;
+import com.userguide.model.UserGuide;
 import com.userguide.repositories.UserGuideRepository;
 import com.userguide.repositories.UserRepository;
 import com.userguide.service.UserGuideAssignmentService;
@@ -51,5 +55,29 @@ public class UserGuideAssignmentController {
         redirectAttributes.addFlashAttribute("assignSuccess", true);
 
         return "redirect:/admin/assign"; // redirect to assign
+    }
+    
+    @GetMapping("/assigned-guides")
+    public String viewAssignedGuides(Model model) {
+    	List<UserGuide> guides = guideRepository.findAll();
+
+        // filter out admin users from each guide’s assignedUsers
+        for (UserGuide guide : guides) {
+            List<AppUser> filteredUsers = guide.getAssignedUsers()
+                    .stream()
+                    .filter(user -> !"ROLE_ADMIN".equalsIgnoreCase(user.getRole()))
+                    .toList();
+
+            guide.setAssignedUsers(filteredUsers);
+        }
+
+        model.addAttribute("guides", guides);
+        return "assigned-userguides";
+    }
+    
+    @PostMapping("/delete")
+    public String unassignGuide(@RequestParam Long userId, @RequestParam Long guideId) {
+        assignmentService.unassignGuideFromUser(userId, guideId);
+        return "redirect:/admin/assign/assigned-guides?unassignSuccess";
     }
 }
